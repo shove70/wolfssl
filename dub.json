@@ -1,0 +1,21 @@
+{
+    "authors": ["Shove"],
+    "name": "wolfssl",
+    "description": "WolfSSL D Deimos Bindings.",
+    "license": "MIT",
+    "copyright": "Copyright © 2020, Shove",
+    "targetType": "library",
+    "targetName": "wolfssl",
+    "importPaths": [
+        "."
+    ],
+    "sourcePaths": [
+        "./deimos"
+    ],
+    "lflags-posix": [
+        "-L/usr/local/lib"
+    ],
+    "libs-posix": [
+        "wolfssl"
+    ]
+}
