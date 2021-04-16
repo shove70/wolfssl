@@ -1,4 +1,3 @@
-
 module deimos.wolfssl.wolfssl;
 
 public:
@@ -57,6 +56,14 @@ enum SSL_R_TLSV1_ALERT_UNKNOWN_CA          = 102;
 enum SSL_R_SSLV3_ALERT_CERTIFICATE_UNKNOWN = 103;
 enum SSL_R_SSLV3_ALERT_BAD_CERTIFICATE     = 104;
 
+enum SSL_CBIO_ERR_GENERAL    = -1;     /* general unexpected err */
+enum SSL_CBIO_ERR_WANT_READ  = -2;     /* need to call read  again */
+enum SSL_CBIO_ERR_WANT_WRITE = -2;     /* need to call write again */
+enum SSL_CBIO_ERR_CONN_RST   = -3;     /* connection reset */
+enum SSL_CBIO_ERR_ISR        = -4;     /* interrupt */
+enum SSL_CBIO_ERR_CONN_CLOSE = -5;     /* connection closed or epipe */
+enum SSL_CBIO_ERR_TIMEOUT    = -6;     /* socket timeout */
+
 
 alias SSL     = WOLFSSL;
 alias SSL_CTX = WOLFSSL_CTX;
@@ -78,6 +85,7 @@ alias SSL_CTX_check_private_key          = wolfSSL_CTX_check_private_key;
 alias SSL_new                            = wolfSSL_new;
 alias SSL_CTX_free                       = wolfSSL_CTX_free;
 alias SSL_set_fd                         = wolfSSL_set_fd;
+alias SSL_get_fd                         = wolfSSL_get_fd;
 alias SSL_connect                        = wolfSSL_connect;
 alias SSL_shutdown                       = wolfSSL_shutdown;
 alias SSL_free                           = wolfSSL_free;
@@ -86,9 +94,13 @@ alias SSL_get_error                      = wolfSSL_get_error;
 alias SSL_write                          = wolfSSL_write;
 alias SSL_set_accept_state               = wolfSSL_set_accept_state;
 alias SSL_SSL_do_handshake               = wolfSSL_SSL_do_handshake;
-
+alias SSL_SSLSetIOSend                   = wolfSSL_SSLSetIOSend;
+alias SSL_SSLSetIORecv                   = wolfSSL_SSLSetIORecv;
 
 extern (C):
+
+alias SSL_sendFunc                       = int function(WOLFSSL*, const void*, int, void*);
+alias SSL_recvFunc                       = int function(WOLFSSL*, void*, int, void*);
 
 struct FILE;
 struct WOLFSSL_METHOD;
@@ -105,13 +117,14 @@ WOLFSSL_METHOD* wolfTLSv1_server_method();
 WOLFSSL_METHOD* wolfTLSv1_client_method();
 
 WOLFSSL_CTX* wolfSSL_CTX_new(WOLFSSL_METHOD* method);
-int          wolfSSL_CTX_load_verify_locations(WOLFSSL_CTX* ctx, const char* file,const char* path);
+int          wolfSSL_CTX_load_verify_locations(WOLFSSL_CTX* ctx, const char* file, const char* path);
 int          wolfSSL_CTX_use_certificate_chain_file(WOLFSSL_CTX* ctx, const char* file);
 int          wolfSSL_CTX_use_PrivateKey_file(WOLFSSL_CTX* ctx, const char* file, int format);
 int          wolfSSL_CTX_check_private_key(const WOLFSSL_CTX* ctx);
 WOLFSSL*     wolfSSL_new(WOLFSSL_CTX* ctx);
 void         wolfSSL_CTX_free(WOLFSSL_CTX* ctx);
 int          wolfSSL_set_fd(WOLFSSL* ssl, int fd);
+int          wolfSSL_get_fd(WOLFSSL* ssl);
 int          wolfSSL_connect(WOLFSSL* ssl);
 int          wolfSSL_shutdown(WOLFSSL* ssl);
 void         wolfSSL_free(WOLFSSL* ssl);
@@ -120,3 +133,5 @@ int          wolfSSL_get_error(WOLFSSL* ssl, int ret);
 int          wolfSSL_write(WOLFSSL* ssl, const void* data, int sz);
 void         wolfSSL_set_accept_state(WOLFSSL* ssl);
 int          wolfSSL_SSL_do_handshake(WOLFSSL* ssl);
+void         wolfSSL_SSLSetIOSend(WOLFSSL* ssl, SSL_sendFunc sendFunc);
+void         wolfSSL_SSLSetIORecv(WOLFSSL* ssl, SSL_recvFunc recvFunc);
