@@ -74,8 +74,16 @@ alias ERR_print_errors_fp                = wolfSSL_ERR_dump_errors_fp;
 alias ERR_free_strings                   = wolfSSL_ERR_free_strings;
 alias OpenSSL_add_ssl_algorithms         = wolfSSL_add_all_algorithms;
 
+alias TLS_server_method                  = wolfTLS_server_method;
+alias TLS_client_method                  = wolfTLS_client_method;
 alias TLSv1_server_method                = wolfTLSv1_server_method;
 alias TLSv1_client_method                = wolfTLSv1_client_method;
+alias TLSv1_1_server_method              = wolfTLSv1_1_server_method;
+alias TLSv1_1_client_method              = wolfTLSv1_1_client_method;
+alias TLSv1_2_server_method              = wolfTLSv1_2_server_method;
+alias TLSv1_2_client_method              = wolfTLSv1_2_client_method;
+alias TLSv1_3_server_method              = wolfTLSv1_3_server_method;
+alias TLSv1_3_client_method              = wolfTLSv1_3_client_method;
 
 alias SSL_CTX_new                        = wolfSSL_CTX_new;
 alias SSL_CTX_load_verify_locations      = wolfSSL_CTX_load_verify_locations;
@@ -113,8 +121,16 @@ void  wolfSSL_ERR_dump_errors_fp(FILE* fp);
 void  wolfSSL_ERR_free_strings();
 int   wolfSSL_add_all_algorithms();
 
+WOLFSSL_METHOD* wolfTLS_server_method();
+WOLFSSL_METHOD* wolfTLS_client_method();
 WOLFSSL_METHOD* wolfTLSv1_server_method();
 WOLFSSL_METHOD* wolfTLSv1_client_method();
+WOLFSSL_METHOD* wolfTLSv1_1_server_method();
+WOLFSSL_METHOD* wolfTLSv1_1_client_method();
+WOLFSSL_METHOD* wolfTLSv1_2_server_method();
+WOLFSSL_METHOD* wolfTLSv1_2_client_method();
+WOLFSSL_METHOD* wolfTLSv1_3_server_method();
+WOLFSSL_METHOD* wolfTLSv1_3_client_method();
 
 WOLFSSL_CTX* wolfSSL_CTX_new(WOLFSSL_METHOD* method);
 int          wolfSSL_CTX_load_verify_locations(WOLFSSL_CTX* ctx, const char* file, const char* path);
